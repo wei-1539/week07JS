@@ -3,21 +3,21 @@
 // LV3：做 LV2，並加上上方套票新增時，下方 C3 與套票列表也會即時更新
 
 let data;
-function init(){
+function init() {
     axios.get('https://raw.githubusercontent.com/hexschool/js-training/main/travelApi.json')
-    .then(function (response) {
-        // console.log(response.data)
-        // const call = response.data["data"]
-        // console.log(call)
-        data = response.data["data"]
-        console.log(data)
-        renderC3()
-        renderData()
-    })
-    .catch(function (error) {
-        // handle error
-        console.log(error);
-    })
+        .then(function (response) {
+            // console.log(response.data)
+            // const call = response.data["data"]
+            // console.log(call)
+            data = response.data["data"]
+            console.log(data)
+            renderC3()
+            renderData()
+        })
+        .catch(function (error) {
+            // handle error
+            console.log(error);
+        })
 }
 
 
@@ -37,11 +37,11 @@ function renderData() {
 function renderC3() {
     // 篩選地區，並累加數字上去
     // totalObj 會變成 {高雄: 1, 台北: 1, 台中: 1}
-    const totalObj ={}
-    data.forEach(item=>{
-        if(totalObj[item.area]===undefined){
+    const totalObj = {}
+    data.forEach(item => {
+        if (totalObj[item.area] === undefined) {
             totalObj[item.area] = 1;
-        }else{
+        } else {
             totalObj[item.area] += 1;
         }
     })
@@ -51,21 +51,28 @@ function renderC3() {
     // newData = [["高雄", 2], ["台北",1], ["台中", 1]]
     const newData = []
     const objArr = Object.keys(totalObj)
-    console.log(objArr)
+    console.log(objArr[0])
     objArr.forEach(item => {
-        let obj =[]
+        let obj = []
         obj.push(item)
         obj.push(totalObj[item])
         newData.push(obj)
     })
-    console.log(newData,"newData")
+    console.log(newData, "newData")
 
+    
 
     const chart = c3.generate({
         bindto: '#chart',
         data: {
             columns: newData,
             type: "donut",
+            
+            // colors: {
+            //     "高雄": "#E68618",
+            //     "台中": "#5151D3",
+            //     "台北": "#26BFC7"
+            // }
         },
         donut: {
             title: "地區"
